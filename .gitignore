@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Supabase temporary files
+supabase/.temp/
+
+# Unneeded empty file
+/plummeted
