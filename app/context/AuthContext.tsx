@@ -59,7 +59,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const payload: RegisterPayload = { email, password };
       const { data, error } = await supabase.auth.signUp({
         ...payload,
-        options: { data: { full_name: fullName ?? "" } },
+        options: {
+          data: { full_name: fullName ?? "" },
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=/signin`,
+        },
       });
       if (error) throw error;
       // A session is only returned when email confirmation is disabled.

@@ -11,6 +11,15 @@ function isProtectedPath(path: string) {
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
+  // Handle confirmation links that still use the Supabase dashboard's
+  // configured site URL instead of the callback URL used by new sign-ups.
+  if (path !== "/auth/callback" && request.nextUrl.searchParams.has("code")) {
+    const callbackUrl = request.nextUrl.clone();
+    callbackUrl.pathname = "/auth/callback";
+    callbackUrl.searchParams.set("next", path);
+    return NextResponse.redirect(callbackUrl);
+  }
+
   if (!isProtectedPath(path)) {
     return NextResponse.next();
   }

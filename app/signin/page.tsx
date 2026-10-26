@@ -11,6 +11,7 @@ function SignInContent() {
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<"login" | "register">("login");
   const nextPath = searchParams.get("next") ?? "/";
+  const callbackError = searchParams.get("error");
 
   return (
     <div className="app-shell">
@@ -26,7 +27,10 @@ function SignInContent() {
         </div>
         <div className="table-wrap" style={{ padding: 28 }}>
           {mode === "login" ? (
-            <LoginForm onSuccess={() => router.replace(nextPath)} />
+            <>
+              {callbackError && <p className="auth-error">{callbackError}</p>}
+              <LoginForm onSuccess={() => router.replace(nextPath)} />
+            </>
           ) : (
             <RegisterForm
               onSuccess={(hasSession) => {
